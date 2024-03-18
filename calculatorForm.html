@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello World</title>
+    <style>
+      .btn {
+        padding: 10px;
+        border: 1px solid black;
+        display: inline-block;
+      }
+
+      div {
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="main" style="padding: 5%">
+      <div id="btn0" class="btn">0</div>
+      <div id="btn1" class="btn">1</div>
+      <div id="btn2" class="btn">2</div>
+      <div id="btn3" class="btn">3</div>
+      <div id="btn4" class="btn">4</div>
+      <div id="btn5" class="btn">5</div>
+      <div id="btn6" class="btn">6</div>
+      <div id="btn7" class="btn">7</div>
+      <div id="btn8" class="btn">8</div>
+      <div id="btn9" class="btn">9</div>
+    </div>
+
+    <div id="sub" style="padding: 5%">
+      <div id="btnPlus0A+" class="btn">+</div>
+      <div id="btnPMinus1A-" class="btn">-</div>
+      <div id="btnMul2A*" class="btn">*</div>
+      <div id="btnDiv3A/" class="btn">/</div>
+    </div>
+    <hr />
+    <button
+      type="button"
+      onclick="clearbtn()"
+      style="
+        background-color: #8b938b; /* Green */
+        border: none;
+        color: white;
+        padding: 10px 180px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+      "
+    >
+      Clear
+    </button>
+    <button
+      type="button"
+      onclick="equals()"
+      style="
+        background-color: #4caf53; /* Green */
+        border: none;
+        color: white;
+        padding: 10px 180px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+      "
+    >
+      Equals
+    </button>
+    <div id="output"></div>
+
+    <script>
+      console.dir(document);
+      var output = document.getElementById("output");
+      let numbers = [];
+      let operators = [];
+      let operator = "";
+      var btnCN = document.getElementById("main").childNodes;
+      var btnOperations = document.getElementById("sub").childNodes;
+      console.log(btnOperations);
+      console.dir(btnCN);
+      for (i = 0; i < btnCN.length; i++) {
+        if (btnCN[i].nodeName == "DIV") {
+          console.log(btnCN[i].id);
+          btnCN[i].addEventListener("click", numbersFunction);
+        }
+      }
+      for (i = 0; i < btnOperations.length; i++) {
+        if (btnOperations[i].nodeName == "DIV") {
+          console.log(btnOperations[i].id);
+          btnOperations[i].addEventListener("click", operationFunction);
+        }
+      }
+
+      function numbersFunction(e) {
+        console.log(this.id);
+        let number = this.id.split("btn");
+        numbers = [{ id: this.id, number: parseInt(number[1]) }, ...numbers]; //to handle for only 2 numbers
+
+        // numbers.push({ id: this.id, number: parseInt(number[1]) });
+        console.log("Numbers Array::", numbers);
+        console.log("number", number[1]);
+        // output.innerHTML = "CLICKED";
+        this.style.border = "3px solid blue";
+      }
+
+      function operationFunction(e) {
+        let localOperator = this.id.split("A");
+        console.log("from op:", localOperator[1]);
+        operator = localOperator[1];
+        console.log("e", e);
+        // operator.push({ id: this.id, operator: operator[1] });
+        // output.innerHTML = "Mouse X " + e.x;
+        this.style.border = "3px solid green";
+      }
+
+      function equals() {
+        if (numbers && operator) {
+          console.log(numbers);
+          console.log("operator:::", operator);
+          //For simplicity I am performing for 2 numbers only and for happy flow as communicated by Ahmad as well
+          let number1 = numbers[0]?.number;
+          let number2 = numbers[1]?.number;
+          let result = 0;
+          let opText = "";
+          if (operator == "+") {
+            result = number1 + number2;
+            opText = "Addition";
+          } else if (operator == "-") {
+            result = number1 - number2;
+            opText = "Substraction";
+          } else if (operator == "*") {
+            result = number1 * number2;
+            opText = "Multiplication";
+          } else if (operator == "/") {
+            result = number1 / number2;
+            opText = "Division";
+          }
+          console.log("result::", result);
+          output.innerHTML = `
+        <h2>Calculation :</h2>
+        <p><strong>First Number:</strong> ${number1}</p>
+        <p><strong>Second Number:</strong> ${number2}</p>
+        <p><strong>Operation:</strong> ${opText}</p>
+
+        <p><strong>Result:</strong> ${result}</p>
+      `;
+        }
+      }
+      function clearbtn() {
+        console.log("called");
+        // this.style.border = "3px solid red";
+        numbers = [];
+        operator = "";
+        var div = document.getElementsByClassName("btn");
+        console.log("div", div);
+        //just want to update the css on clear as well..but logically done it
+        // var btnCN = document.getElementById("main").childNodes;
+        // var btnOperations = document.getElementById("sub").childNodes;
+        // console.log(btnOperations);
+        // console.dir(btnCN);
+        // for (i = 0; i < btnCN.length; i++) {
+        //   if (btnCN[i].nodeName == "DIV") {
+        //     console.log(btnCN[i].id);
+        //     btnCN[i].id.style.border = "black";
+        //   }
+        // }
+        // div.style.border = "black";
+        output.innerHTML = `
+       
+      `;
+      }
+    </script>
+  </body>
+</html>
